@@ -1,0 +1,18 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box = "ubuntu/trusty64"
+
+	config.vm.provider "virtualbox" do |vb|
+		vb.cpus = 2
+		vb.memory = 2048
+	end
+
+  config.vm.provision "docker"
+  config.vm.provision "shell", inline:
+    "ps aux | grep 'sshd:' | awk '{print $2}' | xargs kill"
+
+	config.vm.network "private_network", type: "dhcp"
+
+end
